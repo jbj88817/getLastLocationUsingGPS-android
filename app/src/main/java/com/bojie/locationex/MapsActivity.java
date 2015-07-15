@@ -34,6 +34,9 @@ public class MapsActivity extends FragmentActivity implements
      * This code is returned in Activity.onActivityResult
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private long interval = 60 * 1000;  // 1 minute, in milliseconds
+    private long fastestInterval = 60 * 1000;  // 1 minute, in milliseconds
+    private float minDisplacement = 0;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -60,9 +63,11 @@ public class MapsActivity extends FragmentActivity implements
 
         // Create the LocationRequest object
         mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                .setInterval(interval)        // 1 minute
+                .setFastestInterval(fastestInterval) // 1 minute
+                .setSmallestDisplacement(minDisplacement);
+
     }
 
     @Override

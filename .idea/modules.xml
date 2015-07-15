@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/android-location-example.iml" filepath="$PROJECT_DIR$/android-location-example.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/getLastLocationUsingGPS-android.iml" filepath="$PROJECT_DIR$/getLastLocationUsingGPS-android.iml" />
     </modules>
   </component>
 </project>
-
