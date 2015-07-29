@@ -1,13 +1,18 @@
 package com.bojie.locationex;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,7 +35,8 @@ public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
-        ResultCallback<LocationSettingsResult> {
+        ResultCallback<LocationSettingsResult>,
+        View.OnClickListener {
 
     public static final String TAG = MapsActivity.class.getSimpleName();
 
@@ -46,6 +52,9 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private LocationSettingsRequest mLocationSettingsRequest;
+    private Button btn_send_location;
+    private double mCurrentLatitude;
+    private double mCurrentLongitude;
 
 
     @Override
@@ -55,15 +64,18 @@ public class MapsActivity extends FragmentActivity implements
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
+        btn_send_location = (Button) findViewById(R.id.send_my_location_btn);
+        btn_send_location.setOnClickListener(this);
+
         long interval = 10 * 1000;   // 10 seconds, in milliseconds
         long fastestInterval = 1 * 1000;  // 1 second, in milliseconds
         float minDisplacement = 0;
 
 //        // Check if has GPS
-//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//            buildAlertMessageNoGps();
-//        }
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+        }
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -71,16 +83,17 @@ public class MapsActivity extends FragmentActivity implements
                 .addApi(LocationServices.API)
                 .build();
 
+
         // Create the LocationRequest object
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-                .setInterval(interval)
-                .setFastestInterval(fastestInterval)
-                .setSmallestDisplacement(minDisplacement);
+//        mLocationRequest = LocationRequest.create()
+//                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+//                .setInterval(interval)
+//                .setFastestInterval(fastestInterval)
+//                .setSmallestDisplacement(minDisplacement);
 
         // Check if has GPS by using Google play service
-        buildLocationSettingsRequest();
-        checkLocationSettings();
+//        buildLocationSettingsRequest();
+//        checkLocationSettings();
 
     }
 
@@ -129,10 +142,10 @@ public class MapsActivity extends FragmentActivity implements
     private void handleNewLocation(Location location) {
         Log.d(TAG, location.toString());
 
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        mCurrentLatitude = location.getLatitude();
+        mCurrentLongitude = location.getLongitude();
 
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        LatLng latLng = new LatLng(mCurrentLatitude, mCurrentLongitude);
 
         //mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
         MarkerOptions options = new MarkerOptions()
@@ -140,6 +153,7 @@ public class MapsActivity extends FragmentActivity implements
                 .title("I am here!");
         mMap.addMarker(options);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
     }
 
     @Override
@@ -261,5 +275,13 @@ public class MapsActivity extends FragmentActivity implements
                 // Location settings are inadequate, and cannot be fixed here. Dialog not created
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        sendIntent.setData(Uri.parse("sms:"));
+        sendIntent.putExtra("sms_body", "My location at \nLatitude: " + mCurrentLatitude + " \nLongitude: " + mCurrentLongitude);
+        startActivity(sendIntent);
     }
 }
