@@ -85,11 +85,11 @@ public class MapsActivity extends FragmentActivity implements
 
 
         // Create the LocationRequest object
-//        mLocationRequest = LocationRequest.create()
-//                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-//                .setInterval(interval)
-//                .setFastestInterval(fastestInterval)
-//                .setSmallestDisplacement(minDisplacement);
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                .setInterval(interval)
+                .setFastestInterval(fastestInterval)
+                .setSmallestDisplacement(minDisplacement);
 
         // Check if has GPS by using Google play service
 //        buildLocationSettingsRequest();
