@@ -8,3 +8,5 @@ Adding check the user GPS enable.
 ![alt tag](http://i59.tinypic.com/2r6o5qh.jpg)
 
 ![alt tag](http://i61.tinypic.com/jh387n.jpg)
+
+![alt tag](http://i.stack.imgur.com/tdMP7l.jpg)
