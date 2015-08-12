@@ -9,7 +9,8 @@
         android:id="@+id/send_my_location_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send My location via SMS"/>
+        android:text="Send My location via SMS"
+        android:background="#51FF3E"/>
 
     <fragment
         android:id="@+id/map"
@@ -17,7 +18,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MapsActivity"/>
-
-
 
 </LinearLayout>
